@@ -1,7 +1,12 @@
 package main
 
-import "github.com/gin-gonic/gin"
-import "net/http"
+import (
+	"fmt"
+	"gin-sample-app/routes"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
 	r := gin.Default()
@@ -10,5 +15,10 @@ func main() {
 			"message": "pong",
 		})
 	})
-	r.Run() // listen and serve on 0.0.0.0:8080
+	group := r.Group("")
+	routes.AllRoutes(group)
+	err := r.Run() // listen and serve on 0.0.0.0:8080
+	if err != nil {
+		fmt.Print("An error has occurred, details: %s", err)
+	}
 }
