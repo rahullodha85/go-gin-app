@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"gin-sample-app/routes"
 	"net/http"
-
+	"os"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,8 +17,13 @@ func main() {
 	})
 	group := r.Group("")
 	routes.AllRoutes(group)
-	err := r.Run() // listen and serve on 0.0.0.0:8080
+	addr := fmt.Sprintf("%s:%s", os.Getenv("HOST"), os.Getenv("PORT"))
+	s := &http.Server{
+		Addr:           addr,
+		Handler:        r,
+	}
+	err := s.ListenAndServe() // listen and serve on 0.0.0.0:8080
 	if err != nil {
-		fmt.Print("An error has occurred, details: %s", err)
+		fmt.Print("An error has occurred, details: %w", err)
 	}
 }
