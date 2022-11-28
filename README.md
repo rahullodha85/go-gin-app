@@ -8,4 +8,4 @@
 
 ### Run Container
 
-```docker run -d -p <port>:<port> --name <container-name> <image-tag>```
+```docker run -d -p <port>:<port> --name <container-name> --env HOST=0.0.0.0 --env PORT=<port> <image-tag>```
