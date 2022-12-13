@@ -2,13 +2,17 @@ package main
 
 import (
 	"fmt"
+	"gin-sample-app/config"
 	"gin-sample-app/routes"
 	"net/http"
 	"os"
+
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	cfg := config.LoadConfig(os.Getenv("ENV"))
+	fmt.Printf("%v", cfg.Server)
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
@@ -17,7 +21,7 @@ func main() {
 	})
 	group := r.Group("")
 	routes.AllRoutes(group)
-	addr := fmt.Sprintf("%s:%s", os.Getenv("HOST"), os.Getenv("PORT"))
+	addr := fmt.Sprintf("%s:%s", cfg.Server.Host, cfg.Server.Port)
 	s := &http.Server{
 		Addr:           addr,
 		Handler:        r,
