@@ -6,14 +6,11 @@ WORKDIR /source
 
 RUN go build -o /output/app
 
-WORKDIR /output
-
 FROM alpine:latest
 
 WORKDIR /output
 
 COPY --from=builder /output/app ./
-
-EXPOSE ${PORT}
+COPY config config
 
 ENTRYPOINT ["./app"]
