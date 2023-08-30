@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gin-sample-app/config"
+	"gin-sample-app/dbconnectors"
 	"gin-sample-app/routes"
 	"net/http"
 	"os"
@@ -11,6 +12,11 @@ import (
 )
 
 func main() {
+	if os.Getenv("DBMIGRATE") == "true" {
+		dbconnectors.DBSchemaMigrate()
+		fmt.Print("test")
+		return
+	}
 	cfg := config.LoadConfig(os.Getenv("ENV"))
 	fmt.Printf("%v", cfg.Server)
 	r := gin.Default()
@@ -23,8 +29,8 @@ func main() {
 	routes.AllRoutes(group)
 	addr := fmt.Sprintf("%s:%s", cfg.Server.Host, cfg.Server.Port)
 	s := &http.Server{
-		Addr:           addr,
-		Handler:        r,
+		Addr:    addr,
+		Handler: r,
 	}
 	err := s.ListenAndServe() // listen and serve on 0.0.0.0:8080
 	if err != nil {
