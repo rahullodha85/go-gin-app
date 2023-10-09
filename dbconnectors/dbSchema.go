@@ -1,7 +1,7 @@
 package dbconnectors
 
 import (
-	"gin-sample-app/dbModels"
+	"gin-sample-app/models"
 )
 
 func DBSchemaMigrate() {
@@ -9,5 +9,6 @@ func DBSchemaMigrate() {
 	if err != nil {
 		panic(err.Error())
 	}
-	db.AutoMigrate(&dbModels.Movie{})
+	db.AutoMigrate(&models.Movie{})
+	db.AutoMigrate(&models.Account{})
 }
